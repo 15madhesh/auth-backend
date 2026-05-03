@@ -14,16 +14,11 @@ const PORT = process.env.PORT || 5001;
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:3000').split(',');
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (mobile apps, curl)
-    if (!origin || allowedOrigins.some(o => origin.startsWith(o.trim()))) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+app.options('*', cors());
 
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
